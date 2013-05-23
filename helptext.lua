@@ -10,7 +10,7 @@ text["GuildTarget"] = [[This command will send info about your current target to
 
 Format:  "Targeting a SuperBus (100%), "a1k0n", at 2023m"]]
 text["GroupTarget"] = text["GuildTarget"]
-
+text["GTarget"] = text["GuildTarget"
 
 text["GuildReady"] = [[This command is meant to indicate that you are ready (ready for what is up to you) at a steady distance from your target.
 It will send text to Guild or Group chat.
@@ -18,6 +18,7 @@ It will send text to Guild or Group chat.
 
 Format:  "Ready at 1234m from "a1k0n""]]
 text["GroupReady"] = text["GuildReady"]
+text["GReady"] = text["GuildReady"]
 
 
 text["GuildAttacked"] = [[This command is meant to indicate that you are under attack. It will send info about the last ship which hit you to your group or guild.
@@ -25,6 +26,7 @@ text["GuildAttacked"] = [[This command is meant to indicate that you are under a
 
 Format:  "Under attack by a SuperBus, "a1k0n" !"]]
 text["GroupAttacked"] = text["GuildAttacked"]
+text["GAttacked"] = text["GuildAttacked"]
 
 
 text["TargetParent"] = [[This command is meant to be used when you are either targeting a Capship turret or another player's mine. It will target the owner of that object (the Capship or player).]]

@@ -64,10 +64,13 @@ local helptext2 = iup.label{title="Select one and click Info to bring up a dialo
 local names = {
 	"GroupAttacked",
 	"GuildAttacked",
+	"GAttacked",
 	"GuildReady",
 	"GroupReady",
+	"GReady",
 	"GuildTarget",
 	"GroupTarget",
+	"GTarget",
 	"TargetFront",
 	"TargetNextTurret",
 	"TargetPrevTurret",
