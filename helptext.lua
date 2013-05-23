@@ -10,7 +10,7 @@ text["GuildTarget"] = [[This command will send info about your current target to
 
 Format:  "Targeting a SuperBus (100%), "a1k0n", at 2023m"]]
 text["GroupTarget"] = text["GuildTarget"]
-text["GTarget"] = text["GuildTarget"
+text["GTarget"] = text["GuildTarget"]
 
 text["GuildReady"] = [[This command is meant to indicate that you are ready (ready for what is up to you) at a steady distance from your target.
 It will send text to Guild or Group chat.
