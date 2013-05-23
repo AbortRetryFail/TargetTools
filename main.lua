@@ -7,7 +7,7 @@ local objectpos = Game.GetObjectAtScreenPos
 
 -- Targetless compatability
 local function hastargetless()
-	return assert(function() return targetless end)
+	return pcall(function() return targetless end)
 end
 local function targetless_off()
 	if hastargetless() then
@@ -83,13 +83,23 @@ function TargetTools.AttackedBy(channel)
 	end
 end
 
+function TargetTools.GroupOrGuild(fn)
+	if GetGroupOwnerID() ~= 0 then
+		fn("GROUP")
+	else
+		fn("GUILD")
+	end
+end
 
 RegisterUserCommand("GroupTarget", function() TargetTools.SendTarget("GROUP") end)
 RegisterUserCommand("GuildTarget", function() TargetTools.SendTarget("GUILD") end)
+RegisterUserCommand("GTarget", function() TargetTools.GroupOrGuild(TargetTools.SendTarget) end)
 RegisterUserCommand("GroupReady", function() TargetTools.ReadyAtDist("GROUP") end)
 RegisterUserCommand("GuildReady", function() TargetTools.ReadyAtDist("GUILD") end)
+RegisterUserCommand("GReady", function() TargetTools.GroupOrGuild(TargetTools.ReadyAtDist) end)
 RegisterUserCommand("GroupAttacked", function() TargetTools.AttackedBy("GROUP") end)
 RegisterUserCommand("GuildAttacked", function() TargetTools.AttackedBy("GUILD") end)
+RegisterUserCommand("GAttacked", function() TargetTools.GroupOrGuild(TargetTools.AttackedBy) end)
 
 
 function TargetTools.GetPlayerIDs(charid)
