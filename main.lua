@@ -8,13 +8,12 @@ local floor = math.floor
 
 
 -- Targetless compatability
-local hastargetless = false
 local function targetless_exists()
 	return pcall(function() return targetless end)
 end
 
 local function targetless_off()
-	if hastargetless then
+	if targetless_exists() then
 		targetless.var.scanlock = true
 		targetless.api.radarlock = true
 		targetless.var.lock = true
@@ -23,7 +22,7 @@ local function targetless_off()
 	return false
 end
 local function targetless_on()
-	if hastargetless then
+	if targetless_exists() then
 		targetless.api.radarlock = false
 		targetless.var.lock = false
 		targetless.var.scanlock = false
@@ -31,21 +30,6 @@ local function targetless_on()
 	end
 	return false
 end
-
--- "local function foo()" is equivalent to "local foo; foo = function()",
--- so we can reference the function name in the function body properly.
-local function targetless_check()
-	UnregisterEvent(targetless_check, "START")
-	UnregisterEvent(targetless_check, "PLAYER_ENTERED_GAME")
-	hastargetless = targetless_exists()
-end
-
-hastargetless = targetless_exists()
-if not hastargetless then
-	RegisterEvent(targetless_check, "START")
-	RegisterEvent(targetless_check, "PLAYER_ENTERED_GAME")
-end
-
 
 declare("TargetTools", {})
 TargetTools.ReTarget = {
