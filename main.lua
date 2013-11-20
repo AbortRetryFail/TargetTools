@@ -54,15 +54,23 @@ RegisterEvent(TargetTools.ReTarget, "HUD_SHOW")
 function TargetTools.SendTarget(channel)
 	if GetTargetInfo() then
 		local formatstr = "Targeting %s (%d%%, %s), \"%s\", at %dm"
+		local shieldformatstr = "Targeting %s (%d%% / %d%%, %s), \"%s\", at %dm"
 		local nohealthformatstr = "Targeting %s (%d, %d) at %dm"
 		local name, health, distance, factionid, guild, ship = GetTargetInfo()
+		local _, shield = GetPlayerHealth(GetCharacterIDByName(name))
 		local nodeid, objectid = radar.GetRadarSelectionID()
 		if guild and guild ~= "" then
 			name = "["..guild.."] "..name
 		end
 		local str
 		if health and ship and factionid then
-			str = formatstr:format(Article(ship), floor(health*100), FactionName[factionid], name, floor(distance))
+			if shield then
+				str = shieldformatstr:format(Article(ship), floor(shield*100), 
+										floor(health*100), FactionName[factionid], name, floor(distance))
+			else
+				str = formatstr:format(Article(ship), floor(health*100), 
+										FactionName[factionid], name, floor(distance))
+			end
 		else
 			str = nohealthformatstr:format(name, nodeid, objectid, floor(distance))
 		end
