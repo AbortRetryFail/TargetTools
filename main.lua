@@ -65,7 +65,7 @@ function TargetTools.SendTarget(channel)
 		local str
 		if health and ship and factionid then
 			if shield then
-				str = shieldformatstr:format(Article(ship), floor(shield*100), 
+				str = shieldformatstr:format(Article(ship), floor(shield), 
 										floor(health*100), FactionName[factionid], name, floor(distance))
 			else
 				str = formatstr:format(Article(ship), floor(health*100), 
