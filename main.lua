@@ -54,7 +54,7 @@ RegisterEvent(TargetTools.ReTarget, "HUD_SHOW")
 function TargetTools.SendTarget(channel)
 	if GetTargetInfo() then
 		local formatstr = "Targeting %s (%d%%, %s), \"%s\", at %dm"
-		local shieldformatstr = "Targeting %s (%d%% / %d%%, %s), \"%s\", at %dm"
+		local shieldformatstr = "Targeting %s (%d%% : %d%%, %s), \"%s\", at %dm"
 		local nohealthformatstr = "Targeting %s (%d, %d) at %dm"
 		local name, health, distance, factionid, guild, ship = GetTargetInfo()
 		local _, shield = GetPlayerHealth(GetCharacterIDByName(name))
@@ -190,19 +190,32 @@ function TargetTools.GetLocalObjects(charid)
 	return localobjects
 end
 
--- Slow and doesn't catch objects which aren't very big on the screen.
 function TargetTools.TargetFront(targetturret, reverse)
+	local xstep = 1 / gkinterface.GetXResolution()
+	local ystep = 1 / gkinterface.GetYResolution()
+	local xmin = 0.5 - 15 * xstep
+	local xmax = 0.5 + 15 * xstep
+	local ymin = 0.5 - 15 * ystep
+	local ymax = 0.5 + 15 * ystep
 	gkpc("RadarNone")
-	for y=0.5, 0.45, -0.002 do
-		for x=0.5, 0.45, -0.002 do
-			if objectpos(x,y) then setradar(objectpos(x,y)) return x,y end
+	
+	--TODO: rewrite this to spiral outwards from the center
+
+	-- Narrow scan for small stuff
+	for y=ymin, ymax, ystep do
+		for x=xmin, xmax, xstep do
+			local node,obj = objectpos(x,y)
+			if node and obj then setradar(node,obj) return x,y end
 		end
 	end
-	for y=0.5, 0.55, 0.002 do
-		for x=0.5, 0.55, 0.002 do
-			if objectpos(x,y) then setradar(objectpos(x,y)) return x,y end
+	-- Wider fast scan for big things
+	for y=0.45, 0.55, 0.005 do
+		for x=0.45, 0.55, 0.005 do
+			local node,obj = objectpos(x,y)
+			if node and obj then setradar(node,obj) return x,y end
 		end
 	end
+
 	if targetturret then
 		TargetTools.TargetTurret(reverse, true)
 	end
