@@ -60,7 +60,9 @@ function TargetTools.CallSnoop:OnEvent(event, args)
 	if args.location == GetCurrentSectorid() then
 		self.location = args.location
 		local nodeid, objectid = args.msg:match("{(%d+), (%d+)} at")
-		self.target = { nodeid, objectid }
+		if nodeid and objectid then 
+			self.target = { nodeid, objectid }
+		end
 	end
 end
 
