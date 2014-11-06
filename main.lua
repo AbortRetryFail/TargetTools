@@ -1,4 +1,5 @@
 -- written by slime
+-- extended by ARF
 
 local gkpc = gkinterface.GKProcessCommand
 local getradar = radar.GetRadarSelectionID
@@ -50,12 +51,36 @@ end
 RegisterEvent(TargetTools.ReTarget, "TARGET_CHANGED")
 RegisterEvent(TargetTools.ReTarget, "HUD_SHOW")
 
+TargetTools.CallSnoop = {
+	location=0,
+	target={0,0}
+}
+
+function TargetTools.CallSnoop:OnEvent(event, args)
+	if args.location == GetCurrentSectorid() then
+		self.location = args.location
+		local nodeid, objectid = args.msg:match("{(%d+), (%d+)} at")
+		self.target = { nodeid, objectid }
+	end
+end
+
+function TargetTools.CallSnoop.CalledTarget(args)
+	local self = TargetTools.CallSnoop
+	if self.location == GetCurrentSectorid() then
+		setradar(unpack(self.target))
+	end
+end
+
+RegisterEvent(TargetTools.CallSnoop, "CHAT_MSG_GROUP")
+RegisterEvent(TargetTools.CallSnoop, "CHAT_MSG_GUILD")
+RegisterUserCommand("CalledTarget", TargetTools.CallSnoop.CalledTarget)
+
 
 function TargetTools.SendTarget(channel)
 	if GetTargetInfo() then
-		local formatstr = "Targeting %s (%d%%, %s), \"%s\", at %dm"
-		local shieldformatstr = "Targeting %s (%d%% : %d%%, %s), \"%s\", at %dm"
-		local nohealthformatstr = "Targeting %s (%d, %d) at %dm"
+		local formatstr = "Targeting %s (%d%%, %s), \"%s\", {%d, %d} at %dm"
+		local shieldformatstr = "Targeting %s (%d%% : %d%%, %s), \"%s\" {%d, %d} at %dm"
+		local nohealthformatstr = "Targeting %s {%d, %d} at %dm"
 		local name, health, distance, factionid, guild, ship = GetTargetInfo()
 		local _, shield = GetPlayerHealth(GetCharacterIDByName(name))
 		local nodeid, objectid = radar.GetRadarSelectionID()
@@ -66,10 +91,21 @@ function TargetTools.SendTarget(channel)
 		if health and ship and factionid then
 			if shield then
 				str = shieldformatstr:format(Article(ship), floor(shield), 
-										floor(health*100), FactionName[factionid], name, floor(distance))
+										floor(health*100), 
+										FactionName[factionid], 
+										name, 
+										nodeid,
+										objectid,
+										floor(distance)
+										)
 			else
 				str = formatstr:format(Article(ship), floor(health*100), 
-										FactionName[factionid], name, floor(distance))
+										FactionName[factionid], 
+										name, 
+										nodeid,
+										objectid,
+										floor(distance)
+										)
 			end
 		else
 			str = nohealthformatstr:format(name, nodeid, objectid, floor(distance))

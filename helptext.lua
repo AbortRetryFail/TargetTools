@@ -4,6 +4,7 @@ text["ReTarget"] = [[ReTarget is not a command, but activates whenever you undoc
 
 It is enabled by default.]]
 
+text["CalledTarget"] = [[This command will target the last called target from Group or Guild chat if that target was called in your sector]]
 
 text["GuildTarget"] = [[This command will send info about your current target to Guild or Group chat.
 

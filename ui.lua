@@ -62,6 +62,7 @@ local helptext1 = iup.label{title="Here is a list of commands available in the T
 local helptext2 = iup.label{title="Select one and click Info to bring up a dialog explaining how it works."}
 
 local names = {
+	"CalledTarget",
 	"GroupAttacked",
 	"GuildAttacked",
 	"GAttacked",
